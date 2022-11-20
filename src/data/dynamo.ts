@@ -33,14 +33,15 @@ export default class DynamoCliente {
 
 
     }
-    public async guardarNuevo(placa:string){
+    public async guardarNuevo(placa:string,tipoVehiculo:string){
         let unixValue :number = Date.now()
         let hoy :string = unixValue.toString()
         const params = {
             TableName: vars.env.TABLE_NAME, //TABLE_NAME
             Item:{
                 'Placa':{S:placa},
-                'FechaHoraEntrada':{S:hoy}
+                'FechaHoraEntrada':{S:hoy},
+                'TipoVehiculo':{S:tipoVehiculo}
             }
         };
         const respuesta = await this.ddbClient.send(new PutItemCommand(params))
