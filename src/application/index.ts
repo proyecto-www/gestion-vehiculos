@@ -3,23 +3,25 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 import { GuardarVehiculoController } from '../controller/GuardarVehiculoController';
 import { ObtenerVehiculoController } from '../controller/ObtenerVehiculoController';
 import ResponseCustom from '../response/ResponseCustom';
-
+import {SalidaVehiculoController} from '../controller/SalidaVehiculoController'
 
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResult> => {
-   let controller
+    let controller
     switch (event.requestContext.http.method) {
         case 'GET':
-        controller = new ObtenerVehiculoController(event)
+            controller = new ObtenerVehiculoController(event)
             break
         case 'POST':
-        controller = new GuardarVehiculoController(event)
-
+            controller = new GuardarVehiculoController(event)
+            break
+        case 'PATCH':
+            controller = new SalidaVehiculoController(event)
             break
         default:
             return ResponseCustom.badRequestJson()
 
     }
     const respuesta = controller.exec()
-    
+
     return respuesta
 }

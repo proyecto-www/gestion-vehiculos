@@ -22,7 +22,7 @@ provider:
         - dynamodb:BatchGetItem
         - dynamodb:GetItem
         - dynamodb:PutItem
-        Resource: 'arn:aws:dynamodb:us-east-1:666676864377:table/Parqueadero'
+        Resource: 'arn:aws:dynamodb:us-east-1:666676864377:table/Vehiculos'
 
 
 functions:
@@ -35,4 +35,7 @@ functions:
       - httpApi:
           path: /vehiculos
           method: post
+      - httpApi:
+          path: /vehiculos
+          method: patch
 

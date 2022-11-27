@@ -1,4 +1,4 @@
-import { DynamoDBClient, GetItemCommand, PutItemCommand, QueryCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand, PutItemCommand, QueryCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { NOTFOUND } from "dns";
 import * as vars from '../application/config/vars'
 import ResponseCustom from "../response/ResponseCustom";
@@ -23,7 +23,7 @@ export default class DynamoCliente {
                 ':placa': { S: placa },
 
             },
-            KeyConditionExpression: 'Placa = :placa',
+            KeyConditionExpression: 'placa = :placa',
             ScanIndexForward: false,    // true = ascending, false = descending
             Limit: 1
 
@@ -35,16 +35,41 @@ export default class DynamoCliente {
     }
     public async guardarNuevo(placa:string,tipoVehiculo:string){
         let unixValue :number = Date.now()
-        let hoy :string = unixValue.toString()
+        let hoy: string = unixValue.toString()
         const params = {
             TableName: vars.env.TABLE_NAME, //TABLE_NAME
             Item:{
-                'Placa':{S:placa},
-                'FechaHoraEntrada':{S:hoy},
-                'TipoVehiculo':{S:tipoVehiculo}
+                'placa':{S:placa},
+                'fechaHoraEntrada':{N:hoy},
+                'tipoDeVehiculo':{S:tipoVehiculo},
+                'sigueEnUso':{BOOL:true},
+                'valorPagado':{N:'0'}
             }
         };
         const respuesta = await this.ddbClient.send(new PutItemCommand(params))
+        return respuesta
+    }
+    public async salida(placa:string, fechaHoraEntrada:number){
+        const params = {
+            TableName: vars.env.TABLE_NAME, //TABLE_NAME
+            Key:{
+                // 'placa':placa,              
+                // 'fechaHoraEntrada':fechaHoraEntrada.toString(),
+                'placa':{S:placa},
+                'fechaHoraEntrada':{N:fechaHoraEntrada.toString()},
+
+                
+            },
+            UpdateExpression:'set sigueEnUso = :sigueEnUso',
+ 
+            ExpressionAttributeValues: {
+                ':sigueEnUso':{BOOL:false},
+            },
+            
+            ReturnValues: "UPDATED_NEW",
+
+        };
+        const respuesta = await this.ddbClient.send(new UpdateItemCommand(params))
         return respuesta
     }
 
