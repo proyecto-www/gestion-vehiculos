@@ -14,7 +14,7 @@ export class ObtenerVehiculoController {
     }
     public async exec() {
         const respuesta = await this.dynamo.obtenerUltimaVisitaPorPlaca(this.placa)
-        if(respuesta.Items!.length==0){
+        if(respuesta.Items!.length==0 || !respuesta.Items![0].sigueEnUso.BOOL){
             return ResponseCustom.notFound()
         }
         let body = unmarshall(respuesta.Items![0])
