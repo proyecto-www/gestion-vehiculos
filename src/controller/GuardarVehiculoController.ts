@@ -1,5 +1,3 @@
-import DynamoCliente from '../data/dynamo'
-import * as vars from '../application/config/vars'
 import { APIGatewayProxyEventV2 } from 'aws-lambda'
 import ResponseCustom from '../response/ResponseCustom'
 import PlacaUtils from '../utils/PlacaUtils'

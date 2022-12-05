@@ -1,5 +1,6 @@
 import { Pool } from 'pg'
 import Vehiculo from '../model/Vehiculo'
+import * as vars from '../application/config/vars'
 
 export default class PostgresCliente {
 
@@ -7,11 +8,11 @@ export default class PostgresCliente {
 
     constructor() {
         this.cliente = new Pool({
-            user: 'vehiculosDB',
-            host: 'vehiculos.ch9wl55pxf5i.us-east-1.rds.amazonaws.com',
-            database: 'postgres',
-            password: 'Hola123456',
-            port: 5432
+            user: vars.env.RDS_USER,
+            host: vars.env.RDS_HOST,
+            database: vars.env.RDS_DATABASE,
+            password: vars.env.RDS_PASSWORD,
+            port: vars.env.RDS_PORT
         })
     }
 
@@ -21,6 +22,8 @@ export default class PostgresCliente {
         const query = await this.cliente.query('Select id, placa,fechahoraentrada,fechahorasalida,tipodevehiculo from vehiculo where placa=$1 and sigueenuso=true order by fechahoraentrada desc limit 1;',queryValues)
         this.cliente.end
         let respuesta:Vehiculo = query.rows[0]
+
+        
         return respuesta
     }
 

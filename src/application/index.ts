@@ -8,8 +8,7 @@ import PostgresCliente from '../data/postgres';
 import { RegistrarPagoController } from '../controller/RegistrarPagoController';
 
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResult> => {
-    const prueba = new PostgresCliente()
-    prueba.registrarPago('ABC123','HOOLA',10000)
+
     let controller
     switch (event.requestContext.http.method) {
         case 'GET':
