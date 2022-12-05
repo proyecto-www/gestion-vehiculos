@@ -17,6 +17,9 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+    - name: 'Create env file' 
+      run: |
+        echo "${{ secrets.ENV_FILE }}" > .env
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
