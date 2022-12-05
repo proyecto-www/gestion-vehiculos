@@ -1,7 +1,5 @@
 
 service: gestion-de-vehiculos-www
-app: gestion-de-vehiculos-www
-org: dve98
 
 frameworkVersion: '3'
 
@@ -38,4 +36,7 @@ functions:
       - httpApi:
           path: /vehiculos
           method: patch
+      - httpApi:
+          path: /vehiculos/registrar/pago
+          method: post
 

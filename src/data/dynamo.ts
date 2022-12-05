@@ -72,6 +72,31 @@ export default class DynamoCliente {
         const respuesta = await this.ddbClient.send(new UpdateItemCommand(params))
         return respuesta
     }
+    public async registrarPago(placa:string, fechaHoraEntrada:number, idPago:string, valorPagado:number){
+        let unixValue :number = Date.now()
+        let hoy: string = unixValue.toString()
+        const params = {
+            TableName: vars.env.TABLE_NAME, //TABLE_NAME
+            Key:{
+                // 'placa':placa,              
+                // 'fechaHoraEntrada':fechaHoraEntrada.toString(),
+                'placa':{S:placa},
+                'fechaHoraEntrada':{N:fechaHoraEntrada.toString()},
+
+                
+            },
+            UpdateExpression:'set sigueEnUso = :sigueEnUso',
+ 
+            ExpressionAttributeValues: {
+                ':sigueEnUso':{BOOL:false},
+            },
+            
+            ReturnValues: "UPDATED_NEW",
+
+        };
+        const respuesta = await this.ddbClient.send(new UpdateItemCommand(params))
+        return respuesta
+    }
 
 
 }
