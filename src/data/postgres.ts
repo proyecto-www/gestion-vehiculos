@@ -29,7 +29,7 @@ export default class PostgresCliente {
         let tiempoRestante :number=query.rows[0].fechahorapago? tiempoParaSalir-Date.now()+parseInt(query.rows[0].fechahorapago): -1
 
         this.cliente.end
-        let respuesta: Vehiculo = new Vehiculo(query.rows[0].id, query.rows[0].fechahorasalida, query.rows[0].placa, query.rows[0].fechahoraentrada, tiempoRestante)
+        let respuesta: Vehiculo = new Vehiculo(query.rows[0].id, query.rows[0].fechahorasalida, query.rows[0].placa, query.rows[0].fechahoraentrada, tiempoRestante,query.rows[0].tipodevehiculo )
 
 
         return respuesta
